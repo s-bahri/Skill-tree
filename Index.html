@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Life Skill Tree</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f8;--panel:#fff;--ink:#14213d;--mute:#5b6b88;--line:#b8c3d8;--lock:#dde3ee;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1730;--panel:#16223f;--ink:#e8ecf5;--mute:#93a3c4;--line:#334468;--lock:#1b2a4d}}
+:root[data-theme="dark"]{--bg:#0e1730;--panel:#16223f;--ink:#e8ecf5;--mute:#93a3c4;--line:#334468;--lock:#1b2a4d}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 "Instrument Sans",system-ui,sans-serif}
+main{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+h1{font:700 clamp(28px,6vw,40px)/1.1 "Bricolage Grotesque",system-ui,sans-serif;margin:8px 0 4px}
+.sub{color:var(--mute);margin:0 0 16px}
+.bar{height:10px;border-radius:99px;background:var(--lock);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ink);transition:width .3s}
+.stat{color:var(--mute);font-size:14px;margin:6px 0 10px}
+.leg{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 16px;font-size:14px}
+.leg span{display:flex;align-items:center;gap:6px}
+.leg i{width:12px;height:12px;border-radius:50%}
+.wrap{--panel:#120e0c;--ink:#eadfca;--mute:#8d8174;--line:#5a5046;--lock:#1b1613;overflow:auto;max-height:72vh;border:1px solid #2c241e;border-radius:12px;background:radial-gradient(ellipse at 50% 50%,#2b1d14 0,#14100d 45%,#080605 100%)}
+.nd{cursor:pointer;outline:none}
+.ring{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:3 3;opacity:0}
+.nd.sel .ring,.nd:focus-visible .ring{opacity:1}
+.lv{font:700 15px "Instrument Sans",system-ui,sans-serif;text-anchor:middle;dominant-baseline:central;fill:var(--ink);transition:font-size .3s}
+.lv{paint-order:normal}
+.lb{font:600 11.5px "Instrument Sans",system-ui,sans-serif;text-anchor:middle;fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:3px;stroke-linejoin:round}
+.nd.locked .lb{fill:var(--mute)}
+.star{font-size:13px;text-anchor:middle;fill:#f5b82e}
+.aura,.trk,.prg,.orb,.tw,.rip,.pt,.star,.lk,.shine{pointer-events:none}
+.aura,.orb,.tw,.rip,.pt,.bd{transform-box:fill-box;transform-origin:center}
+.aura{fill:var(--c);opacity:.14}
+.a0{animation:hint 2.8s ease-in-out infinite}
+.a1{animation:breathe 4.2s ease-in-out infinite}
+.a2{animation:breathe 3.2s ease-in-out infinite}
+.a3{animation:breathe 2.4s ease-in-out infinite}
+.a4{fill:#f5b82e;animation:breathe 1.9s ease-in-out infinite}
+.trk{fill:none;stroke:var(--line);stroke-width:2.5;opacity:.6}
+.prg{fill:none;stroke:var(--c);stroke-width:2.5;stroke-linecap:round;animation:draw .9s cubic-bezier(.2,.8,.2,1) both}
+.orb{animation:spin 5s linear infinite}.orb.f{animation-duration:3.2s}
+.shine{fill:#fff;opacity:.55;animation:shine 3.4s ease-in-out infinite}
+.tw{fill:#f5b82e;opacity:.9;animation:twinkle 2.4s ease-in-out infinite both}
+.star{animation:bob 2s ease-in-out infinite}
+.lk rect{fill:var(--mute)}.lk path{fill:none;stroke:var(--mute);stroke-width:2}
+.rip{fill:none;stroke:var(--c);stroke-width:3;animation:rip .7s ease-out forwards}
+.pt{fill:var(--c);animation:burst .7s ease-out forwards}
+.pop .bd{animation:pop .55s ease-out}
+.rl1{fill:none;stroke:var(--line);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+@keyframes breathe{0%,100%{transform:scale(.9);opacity:.1}50%{transform:scale(1.12);opacity:.3}}
+@keyframes hint{0%,100%{transform:scale(.85);opacity:0}50%{transform:scale(1.1);opacity:.32}}
+@keyframes draw{from{stroke-dasharray:0 100}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shine{0%,55%{transform:translateX(-60px)}100%{transform:translateX(60px)}}
+@keyframes twinkle{0%,100%{transform:scale(0) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:1}}
+@keyframes bob{50%{transform:translateY(-3px)}}
+@keyframes flow{to{stroke-dashoffset:-11.1}}
+@keyframes rip{from{transform:scale(.6);opacity:.9}to{transform:scale(2.6);opacity:0}}
+@keyframes burst{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+@keyframes pop{0%{transform:scale(.8)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.prg,.shine,.aura,.orb,.tw,.pop .bd{animation:none!important}.rip,.pt,.pl,.rs,.dr,.fl,.bs{display:none}}
+.panel{margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.panel h2,.sheet h2{font:700 22px/1.2 "Bricolage Grotesque",system-ui,sans-serif;margin:0 0 4px}
+.panel p{margin:0 0 12px;color:var(--mute)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row label{color:var(--mute);font-size:14px;display:flex;align-items:center;gap:8px}
+button.act,select,input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 14px;min-height:44px}
+button.act{cursor:pointer;font-weight:600}
+button.act.main{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+button.act:disabled{opacity:.4;cursor:not-allowed}
+button.act:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.msg{min-height:22px;margin:10px 0 0;font-size:14px;color:var(--mute)}
+#radar{display:block;width:100%;max-width:440px;margin:0 auto}
+.rt{font:600 12px "Instrument Sans",system-ui,sans-serif;fill:var(--ink)}
+form{margin-top:20px}
+form h3{font:700 18px "Bricolage Grotesque",system-ui,sans-serif;margin:0 0 8px}
+input{flex:1 1 180px}
+select{max-width:100%}
+.foot{margin-top:20px}
+
+header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.gear{padding:0!important;width:44px;display:flex;align-items:center;justify-content:center}
+.gear svg{transition:transform .5s}.gear:hover svg,.gear:active svg{transform:rotate(90deg)}
+.bar i{position:relative;overflow:hidden}
+.bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:sl 2.2s linear infinite}
+.bs{fill:#eadfca;opacity:.1;animation:tw2 3.4s ease-in-out infinite;pointer-events:none}
+.fl{fill:none;stroke-width:2.5;stroke-dasharray:2 9.1;stroke-linecap:round;animation:flow .9s linear infinite;pointer-events:none;opacity:.9}
+.pl,.rs,.dr{pointer-events:none;transform-box:fill-box;transform-origin:center}
+.pl{fill:none;stroke-width:2;opacity:0;animation:pulse 2.4s ease-out infinite}
+.rs{opacity:0;animation:rise2 2.2s ease-in infinite}
+.dr{fill:none;stroke-width:1.5;stroke-dasharray:5 6;opacity:.8;animation:spin 9s linear infinite}
+.nd:hover .bd{filter:brightness(1.35)}
+@keyframes sl{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+@keyframes tw2{0%,100%{opacity:.08}50%{opacity:.7}}
+@keyframes pulse{from{transform:scale(1);opacity:.8}to{transform:scale(1.9);opacity:0}}
+@keyframes rise2{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-62px);opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(12px) scale(.96)}}
+@keyframes up{from{transform:translateY(100%)}}
+@keyframes fall{to{transform:translate(var(--x),105vh) rotate(var(--r));opacity:.9}}
+.cf{position:fixed;top:-14px;width:8px;height:12px;z-index:50;pointer-events:none;animation:fall var(--t) ease-in forwards}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.chip{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 4px;text-align:center;font-size:12px;color:var(--mute)}
+.chip b{display:block;font:700 22px "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink)}
+.gh{font:700 16px "Bricolage Grotesque",system-ui,sans-serif;margin:16px 0 8px}.gh small{color:var(--mute);font:400 13px "Instrument Sans",system-ui,sans-serif}.gh:first-child{margin-top:4px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.ac{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;background:var(--bg);animation:rise .5s both;transition:transform .2s}
+.ac:hover{transform:translateY(-3px) rotate(-.6deg)}
+.ac img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.ac figcaption{padding:6px 8px;font-size:12px;color:var(--mute);display:flex;flex-direction:column}
+.ac b{color:var(--ink);font-size:13px}
+.th{display:flex;gap:6px;flex-wrap:wrap}.th:not(:empty){margin-top:12px}
+.th img{width:52px;height:52px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:pointer;animation:rise .4s both}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);padding:12px;width:min(92vw,560px)}
+dialog[open]{animation:rise .3s}
+dialog::backdrop{background:rgba(0,0,0,.65)}
+dialog img{display:block;max-width:100%;max-height:62vh;margin:0 auto 10px;border-radius:8px}
+#set{display:none}
+#set.open{display:flex;position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.55);align-items:flex-end}
+.sheet{background:var(--panel);width:100%;max-height:88vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));animation:up .3s ease-out}
+.sh{justify-content:space-between;flex-wrap:nowrap!important;margin-bottom:12px}.sh h2{margin:0}
+@media(min-width:720px){.gear,.sx{display:none!important}#set,#set.open{display:block;position:static;background:none}.sheet{max-height:none;border-radius:0;padding:0;animation:none;background:none}}
+.noanim *,.noanim *::before,.noanim *::after{animation:none!important;transition:none!important}
+.noanim .rip,.noanim .pt,.noanim .pl,.noanim .rs,.noanim .fl,.noanim .cf{display:none}
+</style>
+</head>
+<body>
+<main>
+<header><h1>Life Skill Tree</h1><button class="act gear" id="gear" aria-label="Pengaturan"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></button></header>
+<div class="bar"><i id="fill"></i></div>
+<div class="stat" id="pts"></div>
+<div class="leg" id="leg"></div>
+<div class="wrap" id="wrap"><svg id="svg" role="group" aria-label="Skill tree"></svg></div>
+<section class="panel" aria-live="polite">
+  <h2 id="pn"></h2><p id="pd"></p>
+  <div class="row">
+    <button class="act main" id="up">Naik level</button>
+    <button class="act" id="down">Turunkan</button>
+    <button class="act" id="aa">+ Achievement</button><input type="file" id="af" accept="image/*" multiple hidden>
+    <label>Level maksimal <select id="pmx"></select></label>
+    <label>Animasi <select id="fx"><option value="">Tidak ada</option><option value="glow">Menyala</option><option value="sparkle">Berkilau</option><option value="orbit">Berputar</option><option value="pulse">Gelombang</option><option value="rain">Hujan cahaya</option><option value="ring">Cincin</option><option value="full">Lengkap (semua)</option></select></label>
+    <button class="act" id="del" hidden>Hapus skill</button>
+  </div>
+  <div class="th" id="sa"></div>
+  <p class="msg" id="msg"></p>
+</section>
+<section class="panel">
+  <h2>Statistik</h2>
+  <div class="chips" id="chips"></div>
+  <svg id="radar" viewBox="0 0 400 320" role="img" aria-label="Grafik radar progres per cabang"></svg>
+</section>
+<section class="panel" id="achp" hidden><h2>Achievement</h2><div id="gal"></div></section>
+<div id="set"><div class="sheet">
+  <div class="row sh"><h2>Pengaturan</h2><button class="act sx" id="sx">Tutup</button></div>
+  <div class="row"><label>Tema <select id="th"><option value="">Otomatis</option><option value="light">Terang</option><option value="dark">Gelap</option></select></label>
+  <label>Animasi global <select id="an"><option value="1">Hidup</option><option value="0">Mati</option></select></label></div>
+  <form id="add">
+    <h3>Tambah skill atau cabang baru</h3>
+    <div class="row">
+      <input id="nm" placeholder="Nama skill, misalnya Berkebun" maxlength="30" required>
+      <select id="rq" aria-label="Posisi skill"></select>
+      <select id="mx" aria-label="Level maksimal"></select>
+      <button class="act main" type="submit">Tambah</button>
+    </div>
+  </form>
+  <div class="foot row"><button class="act" id="reset">Reset semua level</button><button class="act" id="restore" hidden>Pulihkan skill bawaan</button></div>
+</div></div>
+</main>
+<dialog id="lbx"><img id="li" alt="Achievement"><p id="lc" class="msg"></p><div class="row"><button class="act" id="ld">Hapus</button><button class="act main" id="lx">Tutup</button></div></dialog>
+<script>
+const COL=["#8b5cf6","#f08a4b","#2fbf9b","#e8c547","#ec6a9b","#4aa3e8"],GOLD="#f5b82e",KEY="skilltree-v2",R=128,DEF=5;
+const BASE=[
+["b1","Rutin Membaca","aku","Belajar"],["b2","Mencatat","b1"],["b3","Merangkum","b2"],["b4","Bahasa Inggris","b1"],["b5","Logika Dasar","b1"],["b6","JavaScript","b5"],
+["m1","Dasar Dapur","aku","Masak"],["m2","Nasi & Telur","m1"],["m3","Tumis & Goreng","m1"],["m4","Sop & Kuah","m3"],["m5","Bumbu Dasar","m1"],["m6","Masakan Nusantara","m5"],
+["o1","Rutin Gerak","aku","Olahraga"],["o2","Lari Ringan","o1"],["o3","Lari 5K","o2"],["o4","Beban Badan","o1"],["o5","Push-up & Plank","o4"],["o6","Peregangan","o1"],
+["k1","Catat Pengeluaran","aku","Keuangan"],["k2","Anggaran Bulanan","k1"],["k3","Dana Darurat","k2"],["k4","Menabung Rutin","k2"],["k5","Investasi Dasar","k3"]
+].map(([id,name,parent,cat])=>({id,name,parent,cat,base:true}));
+let S={lv:{},max:{},fx:{},custom:[],del:[],ach:[],set:{theme:"",anim:1}},sel="b1",armed=false,first=true,pop=null,delArm=null,gs="",ts="",la=null,lbArm=false;
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+S.set=Object.assign({theme:"",anim:1},S.set);S.ach=S.ach||[];
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=i=>document.getElementById(i);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const lvl=id=>S.lv[id]||0,M=id=>S.max[id]||DEF,say=t=>{$("msg").textContent=t};
+const lab=id=>{const l=lvl(id),m=M(id);return l===0?"Belum mulai":l>=m?`Level ${l} (Mahir)`:`Level ${l} dari ${m}`};
+const stage=(l,m)=>{if(!l)return 0;if(l>=m)return 4;const f=l/m;return f<.34?1:f<.7?2:3};
+const opts=(el,v)=>{el.innerHTML=Array.from({length:10},(_,i)=>`<option value="${i+1}">Maks ${i+1}</option>`).join("");el.value=v};
+opts($("pmx"),DEF);opts($("mx"),DEF);
+function wrapLabel(s){if(s.length<=11)return[s];const w=s.split(" ");if(w.length<2)return[s];let b=1,bd=1e9;
+  for(let i=1;i<w.length;i++){const d=Math.abs(w.slice(0,i).join(" ").length-w.slice(i).join(" ").length);if(d<bd){bd=d;b=i}}
+  return[w.slice(0,b).join(" "),w.slice(b).join(" ")]}
+function radar(roots,pcs){if(roots.length<3){$("radar").innerHTML='<text class="rt" x="200" y="160" text-anchor="middle">Butuh minimal 3 cabang untuk grafik</text>';return}const cx=200,cy=150,Rr=100,n=roots.length,pt=(i,f)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[cx+Math.cos(a)*Rr*f,cy+Math.sin(a)*Rr*f]};
+  let s="";[.25,.5,.75,1].forEach(f=>{s+=`<polygon points="${roots.map((_,i)=>pt(i,f).join(",")).join(" ")}" fill="none" stroke="var(--line)"/>`});
+  roots.forEach((r,i)=>{const[x,y]=pt(i,1);s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--line)"/>`});
+  s+=`<polygon points="${pcs.map((p,i)=>pt(i,Math.max(p,3)/100).join(",")).join(" ")}" fill="var(--ink)" fill-opacity=".14" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  roots.forEach((r,i)=>{const[x,y]=pt(i,Math.max(pcs[i],3)/100),[lx,ly]=pt(i,1.17),an=lx>cx+10?"start":lx<cx-10?"end":"middle";
+    s+=`<circle cx="${x}" cy="${y}" r="5" fill="${r.color}"/><text class="rt" x="${lx}" y="${ly+4}" text-anchor="${an}">${esc((r.cat||r.name).slice(0,14))} ${pcs[i]}%</text>`});
+  $("radar").innerHTML=s}
+function model(){const all=BASE.filter(b=>!S.del.includes(b.id)).concat(S.custom),k={},N=[];
+  all.forEach(n=>(k[n.parent]=k[n.parent]||[]).push(n));
+  (function w(p){(k[p]||[]).forEach(c=>{N.push(c);w(c.id)})})("aku");
+  const kids={};N.forEach(n=>(kids[n.parent]=kids[n.parent]||[]).push(n));
+  return{N,kids,by:Object.fromEntries(N.map(n=>[n.id,n]))}}
+const desc=(id,k)=>(k[id]||[]).reduce((a,c)=>a.concat(desc(c.id,k)),[id]);
+function render(){
+  const{N,by,kids}=model(),roots=kids.aku||[],rootOf=n=>n.parent==="aku"?n:rootOf(by[n.parent]);
+  const color=n=>COL[roots.indexOf(rootOf(n))%COL.length];
+  const lc=n=>(kids[n.id]||[]).length?kids[n.id].reduce((s,c)=>s+lc(c),0):1;
+  const pos={aku:{x:0,y:0}};let maxD=1;
+  const place=(p,a0,a1,d)=>{const ks=kids[p]||[],tot=ks.reduce((s,c)=>s+lc(c),0);let a=a0;
+    ks.forEach(c=>{const w=(a1-a0)*lc(c)/tot,m=a+w/2;pos[c.id]={x:Math.cos(m)*d*R,y:Math.sin(m)*d*R,a:m,d};maxD=Math.max(maxD,d);place(c.id,a,a+w,d+1);a+=w})};
+  place("aku",-Math.PI/2,Math.PI*1.5,1);
+  const size=2*(maxD*R+70),c=size/2,open=n=>n.parent==="aku"||lvl(n.parent)>=M(n.parent)||lvl(n.id)>0;
+  const P=(a,r)=>(c+Math.cos(a)*r).toFixed(1)+" "+(c+Math.sin(a)*r).toFixed(1);
+  let b0="",b1="",b2="",b3="",b4="",b5="",g="";
+  N.forEach(n=>{const q=pos[n.id],on=open(n),col=color(n),pr=n.parent==="aku"?null:pos[n.parent],A=pr?`${c+pr.x} ${c+pr.y}`:`${c} ${c}`,B=`${c+q.x} ${c+q.y}`;
+    const da=pr?q.a-pr.a:0,rm=pr?(pr.d+.5)*R:0,al=Math.abs(da)*rm;let d,mx,my;
+    if(!pr||al<6){d=`M${A}L${B}`;mx=c+(q.x+(pr?pr.x:0))/2;my=c+(q.y+(pr?pr.y:0))/2}
+    else{const e=Math.min(16,al/2-1),s=da>0?1:-1,k=e/rm,am=(q.a+pr.a)/2;
+      d=`M${A}L${P(pr.a,rm-e)}Q${P(pr.a,rm)} ${P(pr.a+s*k,rm)}A${rm} ${rm} 0 0 ${da>0?1:0} ${P(q.a-s*k,rm)}Q${P(q.a,rm)} ${P(q.a,rm+e)}L${B}`;mx=c+Math.cos(am)*rm;my=c+Math.sin(am)*rm}
+    const f=on?1:lvl(n.parent)/M(n.parent);
+    b1+=`<path class="rl1" style="${f>0?`stroke:${col}`:""}" d="${d}"/>`;if(f>0)b2+=`<path class="fl" style="stroke:${col}" d="${d}"/>`});
+
+  N.forEach(n=>{const id=n.id,q=pos[id],l=lvl(id),m=M(id),ok=open(n),col=color(n),st=ok?stage(l,m):0,op=m>1?.25+.75*(l-1)/(m-1):1,ls=wrapLabel(n.name),sp=st===4?GOLD:col;
+    const dk=ok?"#120e0c":"var(--lock)",rc=st===4?GOLD:ok?col:"var(--line)",fr=m>1?(l-1)/(m-1):1,fs=l?(12+fr*14).toFixed(1):12,gl=st===4?GOLD:col;
+    const fx=ok?S.fx[id]||"":"",fc=st===4?GOLD:col;
+    let h=`<circle r="38" fill="transparent"/><circle class="ring" r="43"/>`;
+    if(fx==="glow"||fx==="full")h+=`<circle class="aura a3" r="44" style="fill:${fc}"/><circle class="aura a2" r="38" style="fill:${fc}"/>`;
+    if(fx==="orbit"||fx==="full")h+=`<g class="orb f"><circle r="43" fill="none"/><circle cx="41" r="3" fill="${fc}"/><circle cx="-41" r="2.5" fill="${fc}"/></g>`;
+    if(fx==="sparkle"||fx==="full")h+=[[-39,-27,0],[41,-19,.8],[31,35,1.6],[-35,31,.4]].map(([x,y,dl])=>`<g transform="translate(${x} ${y})"><path class="tw" d="M0-6Q0 0 6 0Q0 0 0 6Q0 0-6 0Q0 0 0-6Z" style="fill:${fc};animation-delay:${dl}s"/></g>`).join("");
+    if(fx==="pulse"||fx==="full")h+=[0,.8,1.6].map(d=>`<circle class="pl" r="26" style="stroke:${fc};animation-delay:${d}s"/>`).join("");
+    if(fx==="rain"||fx==="full")h+=[-20,-10,0,10,20,-5,15].map((x,i)=>`<circle class="rs" cx="${x}" cy="28" r="${1.6+i%3*.5}" style="fill:${fc};animation-delay:${i*.35}s"/>`).join("");
+    if(fx==="ring"||fx==="full")h+=`<circle class="dr" r="40" style="stroke:${fc}"/>`;
+    h+=`<circle r="35" fill="none" stroke="${rc}" stroke-width=".8" stroke-opacity=".7"/>`+[0,90,180,270].map(a=>`<rect x="-2.2" y="-2.2" width="4.4" height="4.4" transform="rotate(${a}) translate(0 -35) rotate(45)" fill="${ok?rc:"var(--line)"}"/>`).join("");
+    if(ok)h+=`<circle class="trk" r="30"/>`+(l?`<circle class="prg" r="30" pathLength="100" stroke-dasharray="${(l/m*100).toFixed(1)} 100" transform="rotate(-90)"${st===4?` style="stroke:${GOLD}"`:""}/>`:"");
+    h+=`<g class="bd"><circle r="24" fill="${dk}" stroke="${rc}" stroke-width="1.6"${ok?"":' stroke-dasharray="3 3"'}/>${l?`<circle r="24" fill="${col}" fill-opacity="${(op*.38).toFixed(2)}"/>`:""}<circle r="20.5" fill="none" stroke="${rc}" stroke-width=".7" stroke-opacity=".5"/></g>`;
+    h+=ok?`<text class="lv${st===4?" mx":""}" y="0" style="font-size:${fs}px;${l?`filter:drop-shadow(0 0 ${(2+fr*5).toFixed(1)}px ${gl});`:""}${st===4?"fill:#fff1c4":""}">${l||""}</text>`:`<g class="lk" transform="translate(0 1)"><rect x="-6" y="-2" width="12" height="9" rx="2"/><path d="M-3.5-2v-2.5a3.5 3.5 0 0 1 7 0V-2"/></g>`;
+    if(st===4)h+=`<clipPath id="cp-${id}"><circle r="24"/></clipPath><g clip-path="url(#cp-${id})" style="pointer-events:none"><g transform="skewX(-20)"><rect class="shine" x="-8" y="-30" width="12" height="60"/></g></g>`;
+    h+=`<text class="lb" y="54">${ls.map((t,i)=>`<tspan x="0" dy="${i?13:0}">${esc(t)}</tspan>`).join("")}</text>`;
+    if(pop===id)h+=`<circle class="rip" r="24"/>`+Array.from({length:8},(_,i)=>{const a=i*Math.PI/4;return`<circle class="pt" r="3.5" style="--dx:${(Math.cos(a)*54).toFixed(0)}px;--dy:${(Math.sin(a)*54).toFixed(0)}px"/>`}).join("");
+    g+=`<g class="nd st${st}${ok?"":" locked"}${id===sel?" sel":""}${pop===id?" pop":""}" data-id="${id}" tabindex="0" role="button" aria-label="${esc(n.name)}, ${lab(id)}${ok?"":", terkunci"}" style="--c:${col}" transform="translate(${c+q.x} ${c+q.y})">${h}</g>`});
+  for(let i=0;i<40;i++)b0+=`<circle class="bs" cx="${(i*137.5%size).toFixed(0)}" cy="${((i*89.3+i*i*7.1)%size|0)}" r="${1+i%3*.5}" style="animation-delay:${(i%7)*.4}s"/>`;
+  const tk=Array.from({length:60},(_,i)=>{const a=i*Math.PI/30,r2=i%5?57:60;return`M${(Math.cos(a)*53).toFixed(1)} ${(Math.sin(a)*53).toFixed(1)}L${(Math.cos(a)*r2).toFixed(1)} ${(Math.sin(a)*r2).toFixed(1)}`}).join("");
+  const cen=`<g transform="translate(${c} ${c})"><circle r="66" fill="none" stroke="#6b6054" stroke-width=".8" stroke-opacity=".7"/><path d="${tk}" stroke="#a89c8c" stroke-width=".9" fill="none"/>`+Array.from({length:8},(_,i)=>`<rect x="-3" y="-3" width="6" height="6" transform="rotate(${i*45}) translate(0 -66) rotate(45)" fill="#cfc6b8"/>`).join("")+`<circle r="50" fill="none" stroke="#cfc6b8" stroke-width="1.2"/><circle r="46" fill="#100c0a" stroke="#8d8174" stroke-width="1"/><circle r="39" fill="none" stroke="#d8cfc0" stroke-width="3.2"/><circle r="33" fill="#0b0807" stroke="#6b6054" stroke-width="1"/><circle r="29" fill="none" stroke="#8d8174" stroke-width=".7" stroke-dasharray="2 3"/><text class="lv" y="0" style="fill:#eadfca;font-size:17px">Aku</text></g>`;
+  const sv=$("svg");sv.setAttribute("width",size);sv.setAttribute("height",size);sv.setAttribute("viewBox",`0 0 ${size} ${size}`);sv.innerHTML=b0+b1+b2+b3+b4+b5+g+cen;
+  if(first){first=false;const w=$("wrap");w.scrollLeft=(size-w.clientWidth)/2;w.scrollTop=(size-w.clientHeight)/2}
+  const tot=N.reduce((s,n)=>s+lvl(n.id),0),mx=N.reduce((s,n)=>s+M(n.id),0),pc=mx?Math.round(tot/mx*100):0;
+  $("fill").style.width=pc+"%";$("pts").textContent=`${tot} dari ${mx} poin (${pc}%)`;
+  const pcs=roots.map(r=>{const br=N.filter(n=>rootOf(n)===r);return Math.round(br.reduce((s,n)=>s+lvl(n.id),0)/br.reduce((s,n)=>s+M(n.id),0)*100)});
+  const mas=N.filter(n=>lvl(n.id)>0&&lvl(n.id)>=M(n.id)).length;
+  $("chips").innerHTML=[[N.length,"Skill"],[mas,"Mahir"],[tot,"Poin"],[S.ach.filter(a=>A[a.id]).length,"Achievement"]].map(([v,t])=>`<div class="chip"><b>${v}</b>${t}</div>`).join("");
+  $("leg").innerHTML=roots.map((r,i)=>`<span><i style="background:${color(r)}"></i>${esc(r.cat||r.name)} ${pcs[i]}%</span>`).join("");
+  radar(roots.map(r=>({cat:r.cat,name:r.name,color:color(r)})),pcs);
+  $("rq").innerHTML='<option value="aku">Cabang baru dari Aku</option>'+N.map(x=>`<option value="${x.id}">Setelah ${esc(x.name)}</option>`).join("");
+  $("restore").hidden=!S.del.length;delArm=null;
+  const dl=$("del");dl.hidden=false;dl.textContent="Hapus skill";
+  if(!N.length){$("pn").textContent="Belum ada skill";$("pd").textContent="Semua skill sudah terhapus. Tambahkan lewat form di bawah, atau pulihkan skill bawaan.";["up","down","del","pmx","fx","aa"].forEach(i=>$(i).disabled=true);renderAch();return}
+  const n=by[sel]||N[0];sel=n.id;const l=lvl(n.id),m=M(n.id),ch=kids[n.id]||[];
+  $("pn").textContent=`${n.name} · ${lab(n.id)}`;
+  $("pd").textContent=(rootOf(n).cat||rootOf(n).name)+(open(n)?(ch.length?". Capai level "+m+" untuk membuka skill berikutnya.":". Level "+m+" berarti kamu sudah mahir."):". Terkunci: naikkan dulu "+by[n.parent].name+" ke level "+M(n.parent)+" (sekarang "+lvl(n.parent)+").");
+  $("up").disabled=!open(n)||l>=m;$("down").disabled=l<=0;$("pmx").value=m;$("pmx").disabled=false;$("fx").value=S.fx[n.id]||"";$("fx").disabled=false;dl.disabled=false;$("aa").disabled=false;renderAch();
+}
+const pick=t=>{const g=t.closest(".nd");if(g){delArm=null;sel=g.dataset.id;say("");render()}};
+$("svg").addEventListener("click",e=>pick(e.target));
+$("svg").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick(e.target)}});
+$("up").onclick=()=>{S.lv[sel]=lvl(sel)+1;save();say("Naik ke "+lab(sel)+".");pop=sel;render();pop=null};
+$("down").onclick=()=>{S.lv[sel]=lvl(sel)-1;save();say("");render()};
+$("fx").onchange=e=>{const v=e.target.value;if(v)S.fx[sel]=v;else delete S.fx[sel];save();say(v?"Animasi dipasang di skill ini.":"Animasi dilepas.");render()};
+$("pmx").onchange=e=>{const v=+e.target.value;S.max[sel]=v;if(lvl(sel)>v)S.lv[sel]=v;save();say("Level maksimal diubah ke "+v+".");render()};
+$("del").onclick=()=>{const{kids,by}=model(),ids=desc(sel,kids),b=$("del");
+  if(delArm!==sel){delArm=sel;b.textContent=ids.length>1?`Yakin? +${ids.length-1} cabang ikut terhapus`:"Yakin? Klik lagi";
+    say(ids.length>1?`Ini menghapus ${by[sel].name} dan ${ids.length-1} skill di bawahnya. Klik lagi untuk konfirmasi.`:`Hapus ${by[sel].name}? Klik lagi untuk konfirmasi.`);
+    setTimeout(()=>{if(delArm===sel){delArm=null;b.textContent="Hapus skill";say("")}},4000);return}
+  const par=by[sel].parent,nm=by[sel].name,set=new Set(ids);
+  S.custom=S.custom.filter(x=>!set.has(x.id));
+  S.del=S.del.concat(ids.filter(i=>BASE.some(x=>x.id===i)&&!S.del.includes(i)));
+  S.ach=S.ach.filter(a=>{if(set.has(a.sk)){idbDel(a.id);delete A[a.id];return false}return true});ids.forEach(i=>{delete S.lv[i];delete S.max[i];delete S.fx[i]});delArm=null;sel=par==="aku"?"":par;save();render();
+  say(ids.length>1?`${nm} dan ${ids.length-1} skill di bawahnya dihapus.`:`${nm} dihapus.`)};
+$("add").onsubmit=e=>{e.preventDefault();const name=$("nm").value.trim();if(!name)return;
+  const id="c"+Date.now(),parent=$("rq").value,n={id,name,parent};if(parent==="aku")n.cat=name;
+  S.custom.push(n);S.max[id]=+$("mx").value;sel=id;save();$("nm").value="";say("Ditambahkan.");closeSet();render()};
+$("reset").onclick=()=>{const b=$("reset");if(!armed){armed=true;b.textContent="Yakin? Klik lagi untuk reset";setTimeout(()=>{armed=false;b.textContent="Reset semua level"},3000);return}
+  S.lv={};save();armed=false;b.textContent="Reset semua level";say("Semua level dikembalikan ke awal.");closeSet();render()};
+$("restore").onclick=()=>{S.del=[];save();say("Skill bawaan dikembalikan.");closeSet();render()};
+
+const A={};let db;
+const idb=()=>new Promise(r=>{try{const q=indexedDB.open("skilltree-img",1);q.onupgradeneeded=()=>q.result.createObjectStore("i");q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}});
+const idbPut=(k,v)=>{try{db.transaction("i","readwrite").objectStore("i").put(v,k)}catch(e){}};
+const idbDel=k=>{try{db.transaction("i","readwrite").objectStore("i").delete(k)}catch(e){}};
+const idbAll=()=>new Promise(r=>{try{const q=db.transaction("i").objectStore("i").openCursor();q.onsuccess=()=>{const c=q.result;if(c){A[c.key]=c.value;c.continue()}else r()};q.onerror=()=>r()}catch(e){r()}});
+const shrink=f=>new Promise((ok,no)=>{const fr=new FileReader(),im=new Image();fr.onerror=no;fr.onload=()=>{im.src=fr.result};im.onload=()=>{const k=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",.78))};im.onerror=no;fr.readAsDataURL(f)});
+const fd=d=>new Date(d).toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"});
+function renderAch(){
+  const by=model().by,L=S.ach.filter(a=>A[a.id]).sort((a,b)=>b.d-a.d);
+  $("achp").hidden=!L.length;
+  const s1=L.map(a=>a.id).join();
+  if(s1!==gs){gs=s1;const g={};L.forEach(a=>(g[a.sk]=g[a.sk]||[]).push(a));
+    $("gal").innerHTML=Object.keys(g).map(k=>`<h3 class="gh">${esc((by[k]||{}).name||"Skill")} <small>${g[k].length}</small></h3><div class="gal">${g[k].map((a,i)=>`<figure class="ac" data-a="${a.id}" tabindex="0" role="button" style="animation-delay:${Math.min(i,12)*.05}s"><img src="${A[a.id]}" alt=""><figcaption>${fd(a.d)}</figcaption></figure>`).join("")}</div>`).join("")}
+  const T=L.filter(a=>a.sk===sel),s2=sel+":"+T.map(a=>a.id).join();
+  if(s2!==ts){ts=s2;$("sa").innerHTML=T.map(a=>`<img src="${A[a.id]}" data-a="${a.id}" alt="Achievement">`).join("")}}
+function openA(id){const a=S.ach.find(x=>x.id===id);if(!a||!A[id])return;la=id;lbArm=false;$("li").src=A[id];$("lc").textContent=((model().by[a.sk]||{}).name||"Skill")+" · "+fd(a.d);$("ld").textContent="Hapus";$("lbx").showModal()}
+document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest("[data-a]");if(f)openA(f.dataset.a)});
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches(".ac")){e.preventDefault();openA(e.target.dataset.a)}});
+$("lx").onclick=()=>$("lbx").close();
+$("lbx").addEventListener("click",e=>{if(e.target.id==="lbx")$("lbx").close()});
+$("ld").onclick=()=>{if(!lbArm){lbArm=true;$("ld").textContent="Yakin? Klik lagi";return}
+  S.ach=S.ach.filter(a=>a.id!==la);idbDel(la);delete A[la];save();$("lbx").close();render()};
+$("aa").onclick=()=>$("af").click();
+$("af").onchange=async e=>{const fs=[...e.target.files];e.target.value="";let k=0;
+  for(const f of fs){try{const id="a"+Date.now()+"_"+k;A[id]=await shrink(f);idbPut(id,A[id]);S.ach.push({id,sk:sel,d:Date.now()});k++}catch(x){}}
+  if(k){save();say(k+" achievement ditambahkan.");render()}};
+function confetti(n){if(!S.set.anim)return;for(let i=0;i<n;i++){const e=document.createElement("i");e.className="cf";e.style.cssText=`left:${Math.random()*100}vw;background:${COL[i%6]};--x:${((Math.random()-.5)*160).toFixed(0)}px;--r:${(Math.random()*720).toFixed(0)}deg;--t:${(1.4+Math.random()*1.4).toFixed(1)}s`;document.body.appendChild(e);setTimeout(()=>e.remove(),3000)}}
+const applySet=()=>{const r=document.documentElement;S.set.theme?r.setAttribute("data-theme",S.set.theme):r.removeAttribute("data-theme");document.body.classList.toggle("noanim",!S.set.anim)};
+const closeSet=()=>$("set").classList.remove("open");
+$("th").value=S.set.theme;$("an").value=S.set.anim?"1":"0";
+$("th").onchange=e=>{S.set.theme=e.target.value;save();applySet()};
+$("an").onchange=e=>{S.set.anim=+e.target.value;save();applySet()};
+$("gear").onclick=()=>$("set").classList.add("open");
+$("sx").onclick=closeSet;
+$("set").onclick=e=>{if(e.target.id==="set")closeSet()};
+applySet();render();idb().then(idbAll).then(render);
+</script>
+</body>
+</html>
